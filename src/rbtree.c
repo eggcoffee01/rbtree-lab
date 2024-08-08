@@ -69,11 +69,13 @@ void right_rotate(rbtree *t, node_t* parent){
 }
 
 void rbtree_insert_fixup(rbtree *t, node_t* child){
-
+  
+  node_t *uncle;
+  
   while(child->parent->color == RBTREE_RED){
     //새로 추가된 노드가 부모의 왼쪽일때
     if(child->parent == child->parent->parent->left){ 
-      node_t *uncle = child->parent->parent->right;
+      uncle = child->parent->parent->right;
       if(uncle->color == RBTREE_BLACK){
         if(child == child->parent->right){
           child = child->parent;
@@ -92,7 +94,7 @@ void rbtree_insert_fixup(rbtree *t, node_t* child){
     }
     //새로 추가된 노드가 부모의 오른쪽일떄
     else{
-      node_t *uncle = child->parent->parent->left;
+      uncle = child->parent->parent->left;
       if(uncle->color == RBTREE_BLACK){
         if(child == child->parent->left){
           child = child->parent;
@@ -197,12 +199,12 @@ void rbtree_transplant(rbtree *t, node_t *base, node_t *target){
 }
 
 void rbtree_erase_fixup(rbtree *t, node_t* replacedNode){
-
+  node_t *brother;
   while(replacedNode != t->root && replacedNode->color == RBTREE_BLACK){
     //노드가 부모의 왼쪽일 때
     if(replacedNode == replacedNode->parent->left)
     {
-      node_t *brother = replacedNode->parent->right;
+      brother = replacedNode->parent->right;
       if(brother->color == RBTREE_RED){
         brother->color = RBTREE_BLACK;
         replacedNode->parent->color = RBTREE_RED;
@@ -228,7 +230,7 @@ void rbtree_erase_fixup(rbtree *t, node_t* replacedNode){
       }
     }
     else{
-      node_t *brother = replacedNode->parent->left;
+      brother = replacedNode->parent->left;
       if(brother->color == RBTREE_RED){
         brother->color = RBTREE_BLACK;
         replacedNode->parent->color = RBTREE_RED;
